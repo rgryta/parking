@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en" class="h-full">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Login — Garage Reservations</title>
+  <link rel="stylesheet" href="/static/tailwind.css" />
+</head>
+<body class="h-full bg-gradient-to-br from-slate-100 to-blue-50 flex items-center justify-center">
+
+  <div class="w-full max-w-md">
+    <!-- Logo / Title -->
+    <div class="text-center mb-8">
+      <div class="inline-flex items-center justify-center w-16 h-16 bg-blue-600 rounded-2xl shadow-lg mb-4">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-9 w-9 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+            d="M5 3h14a2 2 0 012 2v12a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2z"/>
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+            d="M8 10h2.5M13.5 10H16M7 14h10M9 7h6"/>
+        </svg>
+      </div>
+      <h1 class="text-3xl font-bold text-slate-800">Garage Parking</h1>
+      <p class="text-slate-500 mt-1">Reserve your parking space</p>
+    </div>
+
+    <!-- Card -->
+    <div class="bg-white rounded-2xl shadow-xl p-8 border border-slate-100">
+      {% if error %}
+      <div class="mb-5 flex items-center gap-2 bg-red-50 border border-red-200 text-red-700 rounded-lg px-4 py-3 text-sm">
+        <svg class="h-4 w-4 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+          <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm.75-11.25a.75.75 0 00-1.5 0v4.5a.75.75 0 001.5 0v-4.5zm-.75 7a1 1 0 110-2 1 1 0 010 2z" clip-rule="evenodd"/>
+        </svg>
+        {{ error }}
+      </div>
+      {% endif %}
+
+      <form method="post" action="/login" class="space-y-5">
+        <input type="hidden" name="next" value="{{ next }}"/>
+
+        <div>
+          <label for="username" class="block text-sm font-medium text-slate-700 mb-1.5">Your name</label>
+          <input
+            id="username" name="username" type="text"
+            placeholder="e.g. Jan Kowalski"
+            required autofocus
+            class="w-full rounded-lg border border-slate-300 px-4 py-2.5 text-slate-800 placeholder-slate-400
+                   focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent
+                   transition-shadow text-sm"
+          />
+          <p class="mt-1 text-xs text-slate-400">Used to label your reservations</p>
+        </div>
+
+        <div>
+          <label for="password" class="block text-sm font-medium text-slate-700 mb-1.5">Password</label>
+          <input
+            id="password" name="password" type="password"
+            placeholder="Enter shared password"
+            required
+            class="w-full rounded-lg border border-slate-300 px-4 py-2.5 text-slate-800 placeholder-slate-400
+                   focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent
+                   transition-shadow text-sm"
+          />
+        </div>
+
+        <button
+          type="submit"
+          class="w-full bg-blue-600 hover:bg-blue-700 active:bg-blue-800 text-white font-semibold
+                 rounded-lg px-4 py-3 transition-colors shadow-sm text-sm mt-2">
+          Sign in
+        </button>
+      </form>
+    </div>
+
+    <p class="text-center text-xs text-slate-400 mt-6">parking.gryta.eu</p>
+  </div>
+
+</body>
+</html>

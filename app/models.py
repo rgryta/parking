@@ -1,0 +1,29 @@
+from datetime import date
+from sqlalchemy import Integer, String, Boolean, Date, ForeignKey, Text
+from sqlalchemy.orm import Mapped, mapped_column, relationship
+from app.database import Base
+
+
+class Space(Base):
+    __tablename__ = "spaces"
+
+    id: Mapped[int] = mapped_column(Integer, primary_key=True, index=True)
+    name: Mapped[str] = mapped_column(String(50), unique=True, nullable=False)
+    description: Mapped[str | None] = mapped_column(String(200), nullable=True)
+    is_active: Mapped[bool] = mapped_column(Boolean, default=True)
+
+    reservations: Mapped[list["Reservation"]] = relationship(
+        "Reservation", back_populates="space", cascade="all, delete-orphan"
+    )
+
+
+class Reservation(Base):
+    __tablename__ = "reservations"
+
+    id: Mapped[int] = mapped_column(Integer, primary_key=True, index=True)
+    space_id: Mapped[int] = mapped_column(Integer, ForeignKey("spaces.id"), nullable=False)
+    reserver_name: Mapped[str] = mapped_column(String(100), nullable=False)
+    date: Mapped[date] = mapped_column(Date, nullable=False)
+    note: Mapped[str | None] = mapped_column(Text, nullable=True)
+
+    space: Mapped["Space"] = relationship("Space", back_populates="reservations")

@@ -1,0 +1,22 @@
+services:
+  parking:
+    build: .
+    restart: unless-stopped
+    env_file: .env
+    volumes:
+      - parking_data:/app/data
+    ports:
+      - "8000:8000"
+    labels:
+      - traefik.enable=true
+      - traefik.http.routers.parking.rule=Host(`parking.gryta.eu`)
+      - traefik.http.routers.parking.entrypoints=websecure
+      - traefik.http.routers.parking.tls.certresolver=letsencrypt
+
+volumes:
+  parking_data:
+
+networks:
+  default:
+    name: traefik
+    external: true
