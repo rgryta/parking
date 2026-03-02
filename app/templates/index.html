@@ -6,12 +6,14 @@
   function openModal(id) { document.getElementById(id).classList.remove('hidden'); }
   function closeModal(id) { document.getElementById(id).classList.add('hidden'); }
 
+  var currentUserName = {{ user.sub | tojson }};
+
   function showReserveModal(spaceId, spaceName, date) {
     document.getElementById('modal-space-id').value = spaceId;
     document.getElementById('modal-date').value = date;
     document.getElementById('modal-title').textContent = 'Reserve ' + spaceName;
     document.getElementById('modal-date-label').textContent = date;
-    document.getElementById('modal-name').value = '';
+    document.getElementById('modal-name').value = currentUserName;
     document.getElementById('modal-note').value = '';
     openModal('reserve-modal');
   }
@@ -184,18 +186,6 @@
             d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/>
         </svg>
         <span id="modal-date-label"></span>
-      </div>
-
-      <div>
-        <label class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1.5">Your name</label>
-        <input
-          id="modal-name" name="reserver_name" type="text"
-          value="{{ user.sub }}"
-          required
-          class="w-full rounded-lg border border-slate-300 dark:border-slate-600 px-3 py-2.5 text-sm
-                 text-slate-800 dark:text-slate-100 bg-white dark:bg-slate-700
-                 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-        />
       </div>
 
       <div>

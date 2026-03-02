@@ -129,20 +129,25 @@ async def reserve(
     request: Request,
     space_id: int = Form(...),
     res_date: str = Form(...),
-    reserver_name: str = Form(...),
     note: str = Form(""),
     start: str = Form(""),
     db: AsyncSession = Depends(get_db),
 ):
-    require_auth(request)
+    user = require_auth(request)
     try:
         d = date.fromisoformat(res_date)
     except ValueError:
         raise HTTPException(400, "Invalid date")
 
+    # Check if this user already has any reservation on this day
+    existing_for_user = await crud.get_user_reservation_on_date(db, user["sub"], d)
+    if existing_for_user:
+        redirect = f"/?start={start}" if start else "/"
+        return RedirectResponse(redirect, status_code=303)
+
     data = ReservationCreate(
         space_id=space_id,
-        reserver_name=reserver_name.strip() or "Anonymous",
+        reserver_name=user["sub"],
         date=d,
         note=note.strip() or None,
     )

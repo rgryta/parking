@@ -78,6 +78,17 @@ async def get_existing_reservation(
     return result.scalar_one_or_none()
 
 
+async def get_user_reservation_on_date(
+    db: AsyncSession, reserver_name: str, date: date
+) -> Reservation | None:
+    result = await db.execute(
+        select(Reservation).where(
+            and_(Reservation.reserver_name == reserver_name, Reservation.date == date)
+        )
+    )
+    return result.scalar_one_or_none()
+
+
 async def create_reservation(db: AsyncSession, data: ReservationCreate) -> Reservation | None:
     existing = await get_existing_reservation(db, data.space_id, data.date)
     if existing:
